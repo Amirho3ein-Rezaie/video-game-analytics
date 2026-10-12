@@ -32,3 +32,19 @@ def cleaning_data() -> int:
     dataframe.reset_index(drop=True, inplace=True)
 
     data.set_data(dataframe)  # save data
+
+    return 0
+
+
+def change_columns_type() -> int:
+    "Change the data types of the dataset columns."
+
+    dataframe = data.get_data()  # get the data from Data class
+
+    dataframe = dataframe.astype(
+        {"Name": str, "Platform": str, "Year": int, "Genre": str, "Publisher": str}
+    )
+
+    data.set_data(dataframe)
+
+    return 0
