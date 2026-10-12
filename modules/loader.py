@@ -1,6 +1,6 @@
 from pandas import read_csv, read_excel, read_json
 from pathlib import Path
-from data.data import read_data
+from data.data import data
 
 # properties
 RAW_DATA_DIR = "data/raw/"
@@ -22,9 +22,9 @@ def read_data_file(name_data_file: str) -> int:
 
         try:
             # read file
-            data = suffixes_funcs[suffix_data_file](path_data_file)
+            read_data = suffixes_funcs[suffix_data_file](path_data_file)
 
-            read_data.set_data(data)  # save file in the special class
+            data.set_data(read_data)  # save file in the special class
 
             return 0
 

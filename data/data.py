@@ -11,4 +11,4 @@ class Data:
         return self.__data
 
 
-read_data = Data()
+data = Data()

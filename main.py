@@ -1,6 +1,6 @@
 from modules.loader import read_data_file
 from tools.func import run_command
-from data.data import read_data
+from data.data import data
 
 
 def main() -> None:
@@ -11,7 +11,7 @@ def main() -> None:
     )
     read_data_file(file_name)
 
-    print(read_data.get_data())
+    print(data.get_data())
 
 
 if __name__ == "__main__":
