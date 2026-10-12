@@ -1,4 +1,7 @@
 from data.data import data
+from pathlib import Path
+
+PREPARED_DATA_DIR = "data/prepared/"
 
 
 def cleaning_data() -> int:
@@ -46,5 +49,39 @@ def change_columns_type() -> int:
     )
 
     data.set_data(dataframe)
+
+    return 0
+
+
+def save_prepared_dataset_file(save_all_types: bool = False) -> int:
+    "save the cleaned and prepared dataset to one file"
+
+    # get info of dataset
+    filename = data.filename
+    type = Path(filename).suffix
+
+    dataframe = data.get_data()
+
+    # manage the save functions
+    save_functions = {
+        ".csv": lambda path: dataframe.to_csv(path, index=False),
+        ".json": lambda path: dataframe.to_json(
+            path, force_ascii=False, orient="records"
+        ),
+        ".xlsx": lambda path: dataframe.to_excel(path, index=False),
+    }
+
+    # save in all types
+    if save_all_types:
+        path = PREPARED_DATA_DIR + filename.split(".")[0]
+
+        for t in save_functions.keys():
+            save_functions[t](path + t)
+
+        return 0
+
+    # save dataset to the own file type
+    path = PREPARED_DATA_DIR + filename
+    save_functions[type](path)
 
     return 0

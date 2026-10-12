@@ -1,5 +1,9 @@
 from modules.loader import read_data_file
-from modules.prepare import cleaning_data, change_columns_type
+from modules.prepare import (
+    cleaning_data,
+    change_columns_type,
+    save_prepared_dataset_file,
+)
 from tools.func import run_command
 
 
@@ -14,6 +18,9 @@ def main() -> None:
     cleaning_data()  # clean the data
 
     change_columns_type()  # change type and name
+
+    # save file
+    save_prepared_dataset_file()
 
 
 if __name__ == "__main__":
