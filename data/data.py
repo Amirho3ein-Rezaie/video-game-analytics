@@ -2,13 +2,13 @@ from pandas import DataFrame
 
 
 class Data:
-    data = DataFrame()
+    __data = DataFrame()
 
-    def set_data(self, loaded_data: DataFrame):
-        self.data = loaded_data
+    def set_data(self, new_data: DataFrame):
+        self.__data = new_data
 
     def get_data(self) -> DataFrame:
-        return self.data
+        return self.__data
 
 
 read_data = Data()
