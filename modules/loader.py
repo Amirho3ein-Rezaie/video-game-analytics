@@ -25,6 +25,7 @@ def read_data_file(name_data_file: str) -> int:
             read_data = suffixes_funcs[suffix_data_file](path_data_file)
 
             data.set_data(read_data)  # save file in the special class
+            data.set_file_type(suffix_data_file)  # save dataset file type
 
             return 0
 
