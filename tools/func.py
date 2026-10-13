@@ -12,8 +12,10 @@ def run_command(command: str) -> int:
         return 1
 
 
-def select_option(options: Enum):
+def select_option(options: Enum, msg: str):
     "Select one of the options in one enum"
+
+    print(msg)  # show msg before showing options
 
     # show the enum options
     for index, option in enumerate(options, start=1):
