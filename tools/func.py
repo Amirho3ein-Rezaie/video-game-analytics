@@ -39,3 +39,15 @@ def select_option(options: Enum, msg: str):
             break
 
     return selected_option
+
+
+def press_enter_to_continue() -> None:
+    "the func that check enter pressed"
+
+    print("Press enter to continue ... ", end="", flush=True)
+
+    while True:
+        char = getwch()
+
+        if repr(char) == repr("\r"):
+            break
