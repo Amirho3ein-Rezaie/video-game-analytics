@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class DatasetsSaveOptions:
+class DatasetSave:
     "one class that have type dataset files and actions"
 
     class FormatsSave(Enum):
