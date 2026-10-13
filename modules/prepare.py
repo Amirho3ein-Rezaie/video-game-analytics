@@ -1,5 +1,6 @@
 from data.data import data
 from pathlib import Path
+from tools.classes import DatasetSave
 
 PREPARED_DATA_DIR = "data/prepared/"
 
@@ -53,7 +54,7 @@ def change_columns_type() -> int:
     return 0
 
 
-def save_prepared_dataset_file(save_all_types: bool = False) -> int:
+def save_prepared_dataset_file(option: DatasetSave.AllOptions) -> int:
     "save the cleaned and prepared dataset to one file"
 
     # get info of dataset
@@ -72,16 +73,18 @@ def save_prepared_dataset_file(save_all_types: bool = False) -> int:
     }
 
     # save in all types
-    if save_all_types:
+    if option == DatasetSave.AllOptions.all:
         path = PREPARED_DATA_DIR + filename.split(".")[0]
 
         for t in save_functions.keys():
             save_functions[t](path + t)
 
-        return 0
+    # save in own type
+    elif option == DatasetSave.AllOptions.own:
+        path = PREPARED_DATA_DIR + filename
+        save_functions[type](path)
 
-    # save dataset to the own file type
-    path = PREPARED_DATA_DIR + filename
-    save_functions[type](path)
-
-    return 0
+    # save in select type
+    else:
+        path = PREPARED_DATA_DIR + filename.split(".")[0] + option.value
+        save_functions[option.value](path)
