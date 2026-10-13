@@ -15,7 +15,7 @@ def read_data_file(name_data_file: str) -> int:
 
     file = Path(path_data_file)
 
-    try:  # check existence of path
+    if file.exists():  # check existance of path
         suffixes_funcs = {"csv": read_csv, "json": read_json, "xlsx": read_excel}
 
         suffix_data_file = file.suffix.split(".")[1]
@@ -33,6 +33,6 @@ def read_data_file(name_data_file: str) -> int:
             print(e)
             return 1
 
-    except FileNotFoundError as e:
-        print(e)
+    else:
+        print(f"{file} Not found ... !")
         return 1
