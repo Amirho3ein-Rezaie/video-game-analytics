@@ -64,3 +64,46 @@ def ask_yes_no(message: str) -> bool:
         if key in ["y", "n"]:
             print(key)
             return True if key == "y" else False
+
+
+def select_number_between(start: int, end: int, msg: str) -> int:
+    "returns the number that selected between start and end"
+
+    while True:
+
+        # show
+        print(f"{msg} [{start},{end}] : ", flush=True, end="")
+
+        # select
+        try:
+            number = int(getwch())
+
+            if number in [n for n in range(start, end + 1)]:
+                print(number)
+                return number
+
+        except ValueError:
+            print("\n" + "Invalid number ... ")
+
+
+def select_item(items: list, start: int = 0, msg: str = "options") -> int:
+    "returns the index of item that selected"
+
+    # show message
+    print(msg)
+
+    # show the list of options
+    for number, item in enumerate(items, start=start):
+        print(f"({number}) {item}")
+
+    # select the option
+    return select_number_between(start, start + len(items) - 1, "select option")
+
+
+def splitter(line: bool = True) -> None:
+    "split selecion by a new line or by a line"
+
+    if line == False:
+        print()
+    else:
+        print("-" * 100)
