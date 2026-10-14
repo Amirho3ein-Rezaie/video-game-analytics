@@ -1,4 +1,5 @@
 from enum import Enum
+from data.data import data
 
 
 class DatasetSave:
@@ -25,3 +26,17 @@ class DatasetSave:
         xlsx = ".xlsx"
         all = "all"
         own = "own"
+
+
+class DatasetFields:
+    "the fields of the dataset as enum"
+
+    @staticmethod
+    def StatsFields() -> Enum:
+        "read the dataset and returns the fields that can calculate the stats on them as Enum"
+
+        dataset = data.get_data()
+
+        columns = list(dataset.columns[5:])
+
+        return Enum("StatsFields", {column: column for column in columns})
