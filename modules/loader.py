@@ -4,14 +4,18 @@ from data.data import data
 
 # properties
 RAW_DATA_DIR = "data/raw/"
+PREPARED_DATA_DIR = "data/prepared/"
 
 
 # functions
-def read_data_file(name_data_file: str) -> int:
+def read_data_file(name_data_file: str, prepared: bool = False) -> int:
     "read data file in xlsx, csv and json formats"
 
     # make path
-    path_data_file = RAW_DATA_DIR + name_data_file
+    if not prepared:
+        path_data_file = RAW_DATA_DIR + name_data_file
+    elif prepared:
+        path_data_file = PREPARED_DATA_DIR + name_data_file
 
     file = Path(path_data_file)
 
