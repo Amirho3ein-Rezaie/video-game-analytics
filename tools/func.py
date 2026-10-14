@@ -51,3 +51,16 @@ def press_enter_to_continue() -> None:
 
         if repr(char) == repr("\r"):
             break
+
+
+def ask_yes_no(message: str) -> bool:
+    "Ask a yes/no question"
+
+    print(f"{message} (y/n): ", end="", flush=True)
+
+    while True:
+        key = getwch().lower()
+
+        if key in ["y", "n"]:
+            print(key)
+            return True if key == "y" else False
