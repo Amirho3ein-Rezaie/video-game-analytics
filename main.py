@@ -27,7 +27,7 @@ def select_sub_analysis(analysis: int, field: DatasetFields.StatsFields):
     "select sub analysis"
 
     # make list of sub analysis
-    sub_analysis = [["mean", "median", "std", "min", "max", "quartiles"]]
+    sub_analysis = [["mean", "median", "std", "min", "max", "quartiles", "all"]]
 
     added_suffix = [item + " " + f"({field})" for item in sub_analysis[analysis - 1]]
     selected_list = ["Go back"] + added_suffix
@@ -47,6 +47,7 @@ def preform(analysis: int, sub_analysis: int, field: DatasetFields.StatsFields) 
             lambda field: stats.describe_field(field, "min"),
             lambda field: stats.describe_field(field, "max"),
             lambda field: stats.quartiles(field),
+            lambda field: stats.all(field),
         ]
     ]
 
