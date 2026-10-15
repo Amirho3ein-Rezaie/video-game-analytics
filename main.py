@@ -17,9 +17,49 @@ from tools.classes import DatasetSave, DatasetFields
 
 # variables
 NEEDED_FIELD_SELECT = [1]  # save the number of analysis that needs select field
+GO_BACK_OPTION = 0
 
 
 # functions
+def load_prepared_data() -> bool:
+    "load data from a prepared dataset"
+
+    file_name = input(
+        "Enter the data file name that is in prepared folder in data (exp: data.csv): "
+    )
+
+    # check load dataset successfuly
+    if read_data_file(file_name, prepared=True) == 0:
+        return True
+    else:
+        print("Reading the prepared dataset file Failed ... ")
+        return False
+
+
+def load_raw_data() -> bool:
+    "load the data from a raw dataset"
+
+    file_name = input(
+        "Enter the data file name that is in raw folder in data (exp: data.csv): "
+    )
+
+    # check load dataset successfuly
+    if read_data_file(file_name) == 0:
+        return True
+    else:
+        return False
+
+
+def prepare_data() -> None:
+    cleaning_data()  # clean the data
+
+    change_columns_type()  # change type and name
+
+    # save file
+    option = select_option(DatasetSave.AllOptions, "Options for saving dataset ... ")
+    save_prepared_dataset_file(option)
+
+
 def select_analysis() -> int:
     "select analysis before select sub_analysis"
 
@@ -53,7 +93,9 @@ def select_sub_analysis(analysis: int) -> dict:
         selected_list = ["Go back"] + sub_analysis[analysis - 1]
 
     # select one of them
-    result = select_item(selected_list, 0, "select one of sub analysis option ... ")
+    result = select_item(
+        selected_list, GO_BACK_OPTION, "select one of sub analysis option ... "
+    )
     return {"result": result, "field": field}
 
 
@@ -87,43 +129,18 @@ def main() -> None:
         run_command("cls")  # clean the terminal
 
         if loaded_data == False:
-            prepared_dataset_flag = ask_yes_no("Do you have prepared dataset file ?")
 
-            if not prepared_dataset_flag:
-                file_name = input(
-                    "Enter the data file name that is in raw folder in data (exp: data.csv): "
-                )
+            if not ask_yes_no("Do you have prepared dataset file ?"):
+                loaded_data = load_raw_data()
 
-                # check load dataset successfuly
-                if read_data_file(file_name) == 1:
-                    press_enter_to_continue()
-                    continue
+                if loaded_data:
+                    prepare_data()
+            else:
+                loaded_data = load_prepared_data()
 
-                loaded_data = True
-
-                cleaning_data()  # clean the data
-
-                change_columns_type()  # change type and name
-
-                # save file
-                option = select_option(
-                    DatasetSave.AllOptions, "Options for saving dataset ... "
-                )
-                save_prepared_dataset_file(option)
-
-            elif prepared_dataset_flag:
-                file_name = input(
-                    "Enter the data file name that is in prepared folder in data (exp: data.csv): "
-                )
-
-                # check load dataset successfuly
-                if read_data_file(file_name, prepared=True) == 0:
-                    loaded_data = True
-                    run_command("cls")
-                else:
-                    print("Reading the prepared dataset file Failed ... ")
-                    press_enter_to_continue()
-                    continue
+            if not loaded_data:
+                press_enter_to_continue()
+                continue
 
         # select one analysis
         splitter()
@@ -137,7 +154,7 @@ def main() -> None:
         selected_field = result_select_sub_analysis["field"]
 
         # go back if selected go back option in sub analysis
-        if selected_sub_analysis == 0:
+        if selected_sub_analysis == GO_BACK_OPTION:
             continue
 
         # run the function and start to analysis
