@@ -25,9 +25,9 @@ def quartiles(field, show_result: bool = True) -> dict:
     # calcualte
     qs = ["25%", "50%", "75%"]
 
-    rs = []
+    rs = {}
     for q in qs:
-        rs.append(dataset.describe()[field][q])
+        rs[q] = dataset.describe()[field][q]
 
     # show
     if show_result:
@@ -35,7 +35,33 @@ def quartiles(field, show_result: bool = True) -> dict:
         print(f"Field: {field}")
         print(f"Statistic: quartiles")
 
+        srs = list(rs.values())
         for i in range(len(qs)):
-            print(f"Result ({qs[i]}): {rs[i] * 1000000:,.0f} units")
+            print(f"Result ({qs[i]}): {srs[i] * 1000000:,.0f} units")
 
     return {"field": field, "describe": "quartiles", "result": rs}
+
+
+def all(field, show_result: bool = True) -> dict:
+    "calculate the all of descriptive stats."
+
+    dataset = data.get_data()
+
+    # calculate the stat
+    result = {}
+    stats = list(dataset.describe()[field].keys())
+    for s in stats:
+        result[s] = dataset.describe()[field][s]
+
+    # show the stat
+    if show_result:
+        print("=== Analysis result ===")
+        print(f"(field) : {field}")
+
+        for key, value in result.items():
+            if key != "count":
+                print(f"({key}) : {value * 1000000:,.0f}")
+            else:
+                print(f"({key}) : {value:,.0f}")
+
+    return result
