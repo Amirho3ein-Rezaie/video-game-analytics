@@ -107,3 +107,12 @@ def splitter(line: bool = True) -> None:
         print()
     else:
         print("-" * 100)
+
+
+def display_result(field: str, statistic: str, result: float) -> None:
+    """Display a formatted statistical analysis result."""
+
+    print("=== Analysis result ===")
+    print(f"Field: {field}")
+    print(f"Statistic: {statistic}")
+    print(f"Result: {result * 1000000:,.0f} units")
