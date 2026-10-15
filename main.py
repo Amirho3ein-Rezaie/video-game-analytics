@@ -15,7 +15,11 @@ from tools.func import (
 )
 from tools.classes import DatasetSave, DatasetFields
 
+# variables
+NEEDED_FIELD_SELECT = [1]  # save the number of analysis that needs select field
 
+
+# functions
 def select_analysis() -> int:
     "select analysis before select sub_analysis"
 
@@ -23,37 +27,54 @@ def select_analysis() -> int:
     return select_item(analysis, 1, "select of analysis option ... ")
 
 
-def select_sub_analysis(analysis: int, field: DatasetFields.StatsFields):
+def select_sub_analysis(analysis: int) -> dict:
     "select sub analysis"
+
+    # select field if need
+    field = ""
+    if analysis in NEEDED_FIELD_SELECT:
+        # select one field to calculate on it
+        field = select_option(
+            DatasetFields.StatsFields(), "select one of the field ... "
+        ).value
+        splitter()
 
     # make list of sub analysis
     sub_analysis = [["mean", "median", "std", "min", "max", "quartiles", "all"]]
 
-    added_suffix = [item + " " + f"({field})" for item in sub_analysis[analysis - 1]]
-    selected_list = ["Go back"] + added_suffix
+    # add suffix and prepare the list of sub analysis
+    selected_list = []
+    if analysis in NEEDED_FIELD_SELECT:
+        added_suffix = [
+            item + " " + f"({field})" for item in sub_analysis[analysis - 1]
+        ]
+        selected_list = ["Go back"] + added_suffix
+    else:
+        selected_list = ["Go back"] + sub_analysis[analysis - 1]
 
     # select one of them
-    return select_item(selected_list, 0, "select of sub analysis option ... ")
+    result = select_item(selected_list, 0, "select one of sub analysis option ... ")
+    return {"result": result, "field": field}
 
 
-def preform(analysis: int, sub_analysis: int, field: DatasetFields.StatsFields) -> None:
+def preform(analysis: int, sub_analysis: int, field) -> None:
     "preform the analysis function"
 
     funcs = [
         [
-            lambda field: stats.describe_field(field, "mean"),
-            lambda field: stats.describe_field(field, "50%"),
-            lambda field: stats.describe_field(field, "std"),
-            lambda field: stats.describe_field(field, "min"),
-            lambda field: stats.describe_field(field, "max"),
-            lambda field: stats.quartiles(field),
-            lambda field: stats.all(field),
+            lambda: stats.describe_field(field, "mean"),
+            lambda: stats.describe_field(field, "50%"),
+            lambda: stats.describe_field(field, "std"),
+            lambda: stats.describe_field(field, "min"),
+            lambda: stats.describe_field(field, "max"),
+            lambda: stats.quartiles(field),
+            lambda: stats.all(field),
         ]
     ]
 
     splitter()
 
-    funcs[analysis - 1][sub_analysis - 1](field)
+    funcs[analysis - 1][sub_analysis - 1]()
 
     splitter()
 
@@ -108,16 +129,12 @@ def main() -> None:
         splitter()
         selected_analysis = select_analysis()
 
-        # select one field to calculate on it
-        splitter()
-        selected_field = select_option(
-            DatasetFields.StatsFields(), "select one of the field ... "
-        ).value
-
         splitter()
 
-        # select one sub analysis to do on the field
-        selected_sub_analysis = select_sub_analysis(selected_analysis, selected_field)
+        # select one sub analysis and one field if need
+        result_select_sub_analysis = select_sub_analysis(selected_analysis)
+        selected_sub_analysis = result_select_sub_analysis["result"]
+        selected_field = result_select_sub_analysis["field"]
 
         # go back if selected go back option in sub analysis
         if selected_sub_analysis == 0:
