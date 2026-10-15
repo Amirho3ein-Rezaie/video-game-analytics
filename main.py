@@ -4,6 +4,7 @@ from modules.prepare import (
     change_columns_type,
     save_prepared_dataset_file,
 )
+from modules import stats
 from tools.func import (
     run_command,
     select_option,
@@ -22,7 +23,7 @@ def select_analysis() -> int:
     return select_item(analysis, 1, "select of analysis option ... ")
 
 
-def select_sub_analysis(analysis: int, field):
+def select_sub_analysis(analysis: int, field: DatasetFields.StatsFields):
     "select sub analysis"
 
     # make list of sub analysis
@@ -35,14 +36,23 @@ def select_sub_analysis(analysis: int, field):
     return select_item(selected_list, 0, "select of sub analysis option ... ")
 
 
-def preform(analysis: int, sub_analysis: int) -> None:
+def preform(analysis: int, sub_analysis: int, field: DatasetFields.StatsFields) -> None:
     "preform the analysis function"
 
-    funcs = {0: {1: None, 2: None, 3: None, 4: None, 5: None}}
+    funcs = [
+        [
+            lambda field: stats.describe_field(field, "mean"),
+            lambda field: stats.describe_field(field, "50%"),
+            lambda field: stats.describe_field(field, "std"),
+            lambda field: stats.describe_field(field, "min"),
+            lambda field: stats.describe_field(field, "max"),
+            lambda field: stats.quartiles(field),
+        ]
+    ]
 
     splitter()
 
-    funcs[analysis][sub_analysis]()
+    funcs[analysis - 1][sub_analysis - 1](field)
 
     splitter()
 
@@ -107,10 +117,13 @@ def main() -> None:
 
         # select one sub analysis to do on the field
         selected_sub_analysis = select_sub_analysis(selected_analysis, selected_field)
-        splitter()
+
+        # go back if selected go back option in sub analysis
+        if selected_sub_analysis == 0:
+            continue
 
         # run the function and start to analysis
-        preform(selected_analysis, selected_sub_analysis)
+        preform(selected_analysis, selected_sub_analysis, selected_field)
 
         press_enter_to_continue()
 
