@@ -35,6 +35,18 @@ def select_sub_analysis(analysis: int, field):
     return select_item(selected_list, 0, "select of sub analysis option ... ")
 
 
+def preform(analysis: int, sub_analysis: int) -> None:
+    "preform the analysis function"
+
+    funcs = {0: {1: None, 2: None, 3: None, 4: None, 5: None}}
+
+    splitter()
+
+    funcs[analysis][sub_analysis]()
+
+    splitter()
+
+
 def main() -> None:
 
     loaded_data = False
@@ -94,8 +106,11 @@ def main() -> None:
         splitter()
 
         # select one sub analysis to do on the field
-        seleted_sub_analysis = select_sub_analysis(selected_analysis, selected_field)
+        selected_sub_analysis = select_sub_analysis(selected_analysis, selected_field)
         splitter()
+
+        # run the function and start to analysis
+        preform(selected_analysis, selected_sub_analysis)
 
         press_enter_to_continue()
 
