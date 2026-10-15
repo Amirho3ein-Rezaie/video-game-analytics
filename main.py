@@ -21,31 +21,27 @@ GO_BACK_OPTION = 0
 
 
 # functions
-def load_prepared_data() -> bool:
-    "load data from a prepared dataset"
+def load_data(prepared: bool) -> bool:
+    "load data from the dataset file"
 
-    file_name = input(
-        "Enter the data file name that is in prepared folder in data (exp: data.csv): "
-    )
-
-    # check load dataset successfuly
-    if read_data_file(file_name, prepared=True) == 0:
-        return True
+    # get the dataset file name
+    file_name = ""
+    if prepared:
+        file_name = input(
+            "Enter the data file name that is in prepared folder in data (exp: data.csv): "
+        )
     else:
-        print("Reading the prepared dataset file Failed ... ")
-        return False
+        file_name = input(
+            "Enter the data file name that is in raw folder in data (exp: data.csv): "
+        )
 
-
-def load_raw_data() -> bool:
-    "load the data from a raw dataset"
-
-    file_name = input(
-        "Enter the data file name that is in raw folder in data (exp: data.csv): "
-    )
-
-    # check load dataset successfuly
-    if read_data_file(file_name) == 0:
-        return True
+    # load the data
+    if file_name != "":
+        if read_data_file(file_name, prepared) == 0:
+            return True
+        else:
+            print("loading data from dataset file Failed ... ")
+            return False
     else:
         return False
 
@@ -130,13 +126,11 @@ def main() -> None:
 
         if loaded_data == False:
 
-            if not ask_yes_no("Do you have prepared dataset file ?"):
-                loaded_data = load_raw_data()
+            prepared_flag = ask_yes_no("Do you have prepared dataset file ?")
+            loaded_data = load_data(prepared_flag)
 
-                if loaded_data:
-                    prepare_data()
-            else:
-                loaded_data = load_prepared_data()
+            if loaded_data and not prepared_flag:
+                prepare_data()
 
             if not loaded_data:
                 press_enter_to_continue()
