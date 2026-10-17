@@ -2,6 +2,8 @@ from enum import Enum
 from msvcrt import getwch
 from subprocess import run
 
+from pandas import DataFrame
+
 
 def run_command(command: str) -> int:
     "run one command in terminal"
@@ -100,13 +102,13 @@ def select_item(items: list, start: int = 0, msg: str = "options") -> int:
     return select_number_between(start, start + len(items) - 1, "select option")
 
 
-def splitter(line: bool = True) -> None:
+def splitter(line: bool = True, length_line: int = 100) -> None:
     "split selecion by a new line or by a line"
 
     if line == False:
         print()
     else:
-        print("-" * 100)
+        print("-" * length_line)
 
 
 def display_result(field: str, statistic: str, result: float) -> None:
@@ -116,3 +118,34 @@ def display_result(field: str, statistic: str, result: float) -> None:
     print(f"Field: {field}")
     print(f"Statistic: {statistic}")
     print(f"Result: {result * 1000000:,.0f} units")
+
+
+def dataframe_as_table(dataframe: DataFrame) -> None:
+    "get a dataframe and show it in table"
+
+    # get the max of length for columns
+    columns = dataframe.columns
+
+    length = []
+    for column in columns:
+
+        len_column = [len(str(column))]
+        for index in range(len(dataframe[column])):
+            len_column.append(len(str(dataframe[column][index])))
+
+        length.append(max(len_column))
+
+    # show columns
+    for len_c, column in zip(length, columns):
+        print(f" {column:<{len_c}} " + "|", end="")
+
+    # split columns and the data in the table
+    print()
+    splitter(length_line=(sum(length) + len(columns) * 3))
+
+    # show the data in the table
+    for record in dataframe.values:
+
+        for len_d, data in zip(length, record):
+            print(f" {data:<{len_d}} " + "|", end="")
+        print()
