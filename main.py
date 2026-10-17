@@ -4,7 +4,7 @@ from modules.prepare import (
     change_columns_type,
     save_prepared_dataset_file,
 )
-from modules import stats
+from modules import stats, sales
 from tools.func import (
     run_command,
     select_option,
@@ -59,7 +59,7 @@ def prepare_data() -> None:
 def select_analysis() -> int:
     "select analysis before select sub_analysis"
 
-    analysis = ["stats"]  # list of analysis
+    analysis = ["stats", "sales"]  # list of analysis
     return select_item(analysis, 1, "select of analysis option ... ")
 
 
@@ -76,7 +76,10 @@ def select_sub_analysis(analysis: int) -> dict:
         splitter()
 
     # make list of sub analysis
-    sub_analysis = [["mean", "median", "std", "min", "max", "quartiles", "all"]]
+    sub_analysis = [
+        ["mean", "median", "std", "min", "max", "quartiles", "all"],
+        ["Top-selling games", "Regional sales comparison", "Sales above average"],
+    ]
 
     # add suffix and prepare the list of sub analysis
     selected_list = []
@@ -107,7 +110,12 @@ def preform(analysis: int, sub_analysis: int, field) -> None:
             lambda: stats.describe_field(field, "max"),
             lambda: stats.quartiles(field),
             lambda: stats.all(field),
-        ]
+        ],
+        [
+            lambda: sales.top_saleing(),
+            lambda: None,
+            lambda: None,
+        ],
     ]
 
     splitter()
