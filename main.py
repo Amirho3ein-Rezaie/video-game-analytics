@@ -70,7 +70,7 @@ def select_sub_analysis(analysis: int) -> dict:
         ["mean", "median", "std", "min", "max", "quartiles", "all"],
         [
             "Top-Selling Games",
-            "Total Global Sales",
+            "Total Sales",
             "Games Above Average Sales",
             "Regional Sales Comparison",
         ],

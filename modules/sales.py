@@ -27,13 +27,14 @@ def top_salling(show_result: bool = True) -> DataFrame:
     return dataframe
 
 
-def total_global_selling(show_result: bool = True) -> int:
+def total_selling(field, show_result: bool = True) -> int:
     "calculate the total global saleing."
 
     dataframe = data.get_data()
 
-    total = sum(dataframe["Global_Sales"])
+    total = sum(dataframe[field])
 
-    display_result(dataframe["Global_Sales"].name, "total Selling", total)
+    if show_result:
+        display_result(dataframe[field].name, "total Selling", total)
 
     return total
