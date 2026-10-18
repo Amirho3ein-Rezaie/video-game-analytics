@@ -78,7 +78,12 @@ def select_sub_analysis(analysis: int) -> dict:
     # make list of sub analysis
     sub_analysis = [
         ["mean", "median", "std", "min", "max", "quartiles", "all"],
-        ["Top-selling games", "Regional sales comparison", "Sales above average"],
+        [
+            "Top-Selling Games",
+            "Total Global Sales",
+            "Games Above Average Sales",
+            "Regional Sales Comparison",
+        ],
     ]
 
     # add suffix and prepare the list of sub analysis
@@ -98,6 +103,9 @@ def select_sub_analysis(analysis: int) -> dict:
     return {"result": result, "field": field}
 
 
+# make function for select field in every sub_analysis
+
+
 def preform(analysis: int, sub_analysis: int, field) -> None:
     "preform the analysis function"
 
@@ -112,8 +120,8 @@ def preform(analysis: int, sub_analysis: int, field) -> None:
             lambda: stats.all(field),
         ],
         [
-            lambda: sales.top_saleing(),
-            lambda: None,
+            lambda: sales.top_salling(),
+            lambda: sales.total_selling(),
             lambda: None,
         ],
     ]
