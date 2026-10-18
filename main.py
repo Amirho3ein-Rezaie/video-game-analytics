@@ -16,7 +16,6 @@ from tools.func import (
 from tools.classes import DatasetSave, DatasetFields
 
 # variables
-NEEDED_FIELD_SELECT = [1]  # save the number of analysis that needs select field
 GO_BACK_OPTION = 0
 
 
@@ -66,15 +65,6 @@ def select_analysis() -> int:
 def select_sub_analysis(analysis: int) -> dict:
     "select sub analysis"
 
-    # select field if need
-    field = ""
-    if analysis in NEEDED_FIELD_SELECT:
-        # select one field to calculate on it
-        field = select_option(
-            DatasetFields.StatsFields(), "select one of the field ... "
-        ).value
-        splitter()
-
     # make list of sub analysis
     sub_analysis = [
         ["mean", "median", "std", "min", "max", "quartiles", "all"],
@@ -86,46 +76,51 @@ def select_sub_analysis(analysis: int) -> dict:
         ],
     ]
 
-    # add suffix and prepare the list of sub analysis
-    selected_list = []
-    if analysis in NEEDED_FIELD_SELECT:
-        added_suffix = [
-            item + " " + f"({field})" for item in sub_analysis[analysis - 1]
-        ]
-        selected_list = ["Go back"] + added_suffix
-    else:
-        selected_list = ["Go back"] + sub_analysis[analysis - 1]
-
     # select one of them
     result = select_item(
-        selected_list, GO_BACK_OPTION, "select one of sub analysis option ... "
+        ["Go back"] + sub_analysis[analysis - 1],
+        GO_BACK_OPTION,
+        "select one of sub analysis option ... ",
     )
-    return {"result": result, "field": field}
+    return result
 
 
-# make function for select field in every sub_analysis
+def field():
+    "select selling fields"
+
+    # select
+    field = select_option(
+        DatasetFields.StatsFields(), "select one of the field ... "
+    ).value
+
+    # split
+    splitter()
+
+    return field
 
 
-def preform(analysis: int, sub_analysis: int, field) -> None:
+def preform(analysis: int, sub_analysis: int) -> None:
     "preform the analysis function"
 
+    # sub analysis options
     funcs = [
         [
-            lambda: stats.describe_field(field, "mean"),
-            lambda: stats.describe_field(field, "50%"),
-            lambda: stats.describe_field(field, "std"),
-            lambda: stats.describe_field(field, "min"),
-            lambda: stats.describe_field(field, "max"),
-            lambda: stats.quartiles(field),
-            lambda: stats.all(field),
+            lambda: stats.describe_field(field(), "mean"),
+            lambda: stats.describe_field(field(), "50%"),
+            lambda: stats.describe_field(field(), "std"),
+            lambda: stats.describe_field(field(), "min"),
+            lambda: stats.describe_field(field(), "max"),
+            lambda: stats.quartiles(field()),
+            lambda: stats.all(field()),
         ],
         [
             lambda: sales.top_salling(),
-            lambda: sales.total_selling(),
+            lambda: sales.total_selling(field()),
             lambda: None,
         ],
     ]
 
+    # run
     splitter()
 
     funcs[analysis - 1][sub_analysis - 1]()
@@ -159,16 +154,14 @@ def main() -> None:
         splitter()
 
         # select one sub analysis and one field if need
-        result_select_sub_analysis = select_sub_analysis(selected_analysis)
-        selected_sub_analysis = result_select_sub_analysis["result"]
-        selected_field = result_select_sub_analysis["field"]
+        selected_sub_analysis = select_sub_analysis(selected_analysis)
 
         # go back if selected go back option in sub analysis
         if selected_sub_analysis == GO_BACK_OPTION:
             continue
 
         # run the function and start to analysis
-        preform(selected_analysis, selected_sub_analysis, selected_field)
+        preform(selected_analysis, selected_sub_analysis)
 
         press_enter_to_continue()
 
