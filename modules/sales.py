@@ -21,6 +21,6 @@ def top_saleing(show_result: bool = True) -> DataFrame:
             dataframe_copy["Global_Sales"] * 1_000_000
         ).astype("int64")
 
-        dataframe_as_table(dataframe_copy)
+        dataframe_as_table(dataframe_copy, ["Global_Sales"])
 
     return dataframe

@@ -120,7 +120,7 @@ def display_result(field: str, statistic: str, result: float) -> None:
     print(f"Result: {result * 1000000:,.0f} units")
 
 
-def dataframe_as_table(dataframe: DataFrame) -> None:
+def dataframe_as_table(dataframe: DataFrame, number_columns: list = []) -> None:
     "get a dataframe and show it in table"
 
     # get the max of length for columns
@@ -146,6 +146,16 @@ def dataframe_as_table(dataframe: DataFrame) -> None:
     # show the data in the table
     for record in dataframe.values:
 
-        for len_d, data in zip(length, record):
-            print(f" {data:<{len_d}} " + "|", end="")
+        for column, len_d, data in zip(dataframe.columns, length, record):
+
+            # make specific fields that are numberic split
+            try:
+                if column in number_columns:
+                    data = int(data)
+                    print(f" {data:<{len_d},} " + "|", end="")
+                else:
+                    print(f" {data:<{len_d}} " + "|", end="")
+            except:
+                print(f" {data:<{len_d}} " + "|", end="")
+
         print()
