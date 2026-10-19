@@ -13,7 +13,7 @@ from tools.func import (
     select_item,
     splitter,
 )
-from tools.classes import DatasetSave, DatasetFields
+from tools.classes import DatasetSave, DatasetFields, Collation
 
 # variables
 GO_BACK_OPTION = 0
@@ -71,8 +71,8 @@ def select_sub_analysis(analysis: int) -> dict:
         [
             "Top-Selling Games",
             "Total Sales",
-            "Games Above Average Sales",
-            "Regional Sales Comparison",
+            "Collate Average Sales",
+            "Regional Sales collation",
         ],
     ]
 
@@ -99,6 +99,36 @@ def field():
     return field
 
 
+def collation() -> Collation:
+    "select one collation for sub analysis that collate somethings"
+
+    # select one collation
+    collation = select_option(Collation, "select one of the collation options ... ")
+
+    # split
+    splitter()
+
+    return collation
+
+
+def head() -> int:
+    "gets the number of heads for limitation of dataframes"
+
+    # get number
+    number = 0
+    while True:
+        try:
+            number = int(input("Enter the head of dataframe : "))
+            break
+        except:
+            pass
+
+    # split
+    splitter()
+
+    return number
+
+
 def preform(analysis: int, sub_analysis: int) -> None:
     "preform the analysis function"
 
@@ -116,7 +146,7 @@ def preform(analysis: int, sub_analysis: int) -> None:
         [
             lambda: sales.top_salling(),
             lambda: sales.total_selling(field()),
-            lambda: None,
+            lambda: sales.collate_avrg_sales(collation(), field(), head()),
         ],
     ]
 
