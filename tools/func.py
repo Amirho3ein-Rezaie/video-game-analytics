@@ -1,7 +1,7 @@
 from enum import Enum
 from msvcrt import getwch
 from subprocess import run
-
+from tools.classes import DatasetSave, DatasetFields, Comparison
 from pandas import DataFrame
 
 
@@ -167,3 +167,47 @@ def dataframe_as_table(dataframe: DataFrame, number_columns: list = []) -> None:
     # split footer
     splitter(length_line=(sum(length) + len(columns) * 3))
     print()
+
+
+def field_select():
+    "select selling fields"
+
+    # select
+    field = select_option(
+        DatasetFields.StatsFields(), "select one of the field ... "
+    ).value
+
+    # split
+    splitter()
+
+    return field
+
+
+def select_comparison() -> Comparison:
+    "select one Comparison for sub analysis that Copare somethings"
+
+    # select one Comparison
+    comparison = select_option(Comparison, "select one of the Comparison options ... ")
+
+    # split
+    splitter()
+
+    return comparison
+
+
+def head_select() -> int:
+    "gets the number of heads for limitation of dataframes"
+
+    # get number
+    number = 0
+    while True:
+        try:
+            number = int(input("Enter the head of dataframe : "))
+            break
+        except:
+            pass
+
+    # split
+    splitter()
+
+    return number

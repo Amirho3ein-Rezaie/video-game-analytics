@@ -12,8 +12,11 @@ from tools.func import (
     ask_yes_no,
     select_item,
     splitter,
+    field_select,
+    head_select,
+    select_comparison,
 )
-from tools.classes import DatasetSave, DatasetFields, Comparison
+from tools.classes import DatasetSave
 
 # variables
 GO_BACK_OPTION = 0
@@ -85,68 +88,26 @@ def select_sub_analysis(analysis: int) -> dict:
     return result
 
 
-def field():
-    "select selling fields"
-
-    # select
-    field = select_option(
-        DatasetFields.StatsFields(), "select one of the field ... "
-    ).value
-
-    # split
-    splitter()
-
-    return field
-
-
-def select_comparison() -> Comparison:
-    "select one Comparison for sub analysis that Copare somethings"
-
-    # select one Comparison
-    comparison = select_option(Comparison, "select one of the Comparison options ... ")
-
-    # split
-    splitter()
-
-    return comparison
-
-
-def head() -> int:
-    "gets the number of heads for limitation of dataframes"
-
-    # get number
-    number = 0
-    while True:
-        try:
-            number = int(input("Enter the head of dataframe : "))
-            break
-        except:
-            pass
-
-    # split
-    splitter()
-
-    return number
-
-
 def preform(analysis: int, sub_analysis: int) -> None:
     "preform the analysis function"
 
     # sub analysis options
     funcs = [
         [
-            lambda: stats.describe_field(field(), "mean"),
-            lambda: stats.describe_field(field(), "50%"),
-            lambda: stats.describe_field(field(), "std"),
-            lambda: stats.describe_field(field(), "min"),
-            lambda: stats.describe_field(field(), "max"),
-            lambda: stats.quartiles(field()),
-            lambda: stats.all(field()),
+            lambda: stats.describe_field(field_select(), "mean"),
+            lambda: stats.describe_field(field_select(), "50%"),
+            lambda: stats.describe_field(field_select(), "std"),
+            lambda: stats.describe_field(field_select(), "min"),
+            lambda: stats.describe_field(field_select(), "max"),
+            lambda: stats.quartiles(field_select()),
+            lambda: stats.all(field_select()),
         ],
         [
             lambda: sales.top_salling(),
-            lambda: sales.total_selling(field()),
-            lambda: sales.Copare_avrg_sales(select_comparison(), field(), head()),
+            lambda: sales.total_selling(field_select()),
+            lambda: sales.Copare_avrg_sales(
+                select_comparison(), field_select(), head_select()
+            ),
             lambda: sales.regional_sales_comparison(),
         ],
     ]
