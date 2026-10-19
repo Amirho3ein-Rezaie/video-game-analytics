@@ -135,6 +135,10 @@ def dataframe_as_table(dataframe: DataFrame, number_columns: list = []) -> None:
 
         length.append(max(len_column))
 
+    # split head
+    print()
+    splitter(length_line=(sum(length) + len(columns) * 3))
+
     # show columns
     for len_c, column in zip(length, columns):
         print(f" {column:<{len_c}} " + "|", end="")
@@ -159,3 +163,7 @@ def dataframe_as_table(dataframe: DataFrame, number_columns: list = []) -> None:
                 print(f" {data:<{len_d}} " + "|", end="")
 
         print()
+
+    # split footer
+    splitter(length_line=(sum(length) + len(columns) * 3))
+    print()
