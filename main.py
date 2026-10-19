@@ -13,7 +13,7 @@ from tools.func import (
     select_item,
     splitter,
 )
-from tools.classes import DatasetSave, DatasetFields, Collation
+from tools.classes import DatasetSave, DatasetFields, Comparison
 
 # variables
 GO_BACK_OPTION = 0
@@ -71,8 +71,8 @@ def select_sub_analysis(analysis: int) -> dict:
         [
             "Top-Selling Games",
             "Total Sales",
-            "Collate Average Sales",
-            "Regional Sales collation",
+            "Copare Average Sales",
+            "Regional Sales Comparison",
         ],
     ]
 
@@ -99,16 +99,16 @@ def field():
     return field
 
 
-def collation() -> Collation:
-    "select one collation for sub analysis that collate somethings"
+def select_comparison() -> Comparison:
+    "select one Comparison for sub analysis that Copare somethings"
 
-    # select one collation
-    collation = select_option(Collation, "select one of the collation options ... ")
+    # select one Comparison
+    comparison = select_option(Comparison, "select one of the Comparison options ... ")
 
     # split
     splitter()
 
-    return collation
+    return comparison
 
 
 def head() -> int:
@@ -146,7 +146,7 @@ def preform(analysis: int, sub_analysis: int) -> None:
         [
             lambda: sales.top_salling(),
             lambda: sales.total_selling(field()),
-            lambda: sales.collate_avrg_sales(collation(), field(), head()),
+            lambda: sales.Copare_avrg_sales(select_comparison(), field(), head()),
         ],
     ]
 

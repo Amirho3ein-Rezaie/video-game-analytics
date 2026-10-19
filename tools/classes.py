@@ -42,7 +42,7 @@ class DatasetFields:
         return Enum("StatsFields", {column: column for column in columns})
 
 
-class Collation(Enum):
+class Comparison(Enum):
     "an Enum that defines the colltion"
 
     BIGGER = "BIGGER"

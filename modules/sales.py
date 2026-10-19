@@ -2,7 +2,7 @@ from numpy import sum, mean
 from pandas import DataFrame
 from data.data import data
 from tools.func import dataframe_as_table, display_result
-from tools.classes import Collation
+from tools.classes import Comparison
 
 
 def top_salling(show_result: bool = True) -> DataFrame:
@@ -41,8 +41,8 @@ def total_selling(field, show_result: bool = True) -> int:
     return total
 
 
-def collate_avrg_sales(
-    collation: Collation, sale_field, head: int = 10, show_result: bool = True
+def Copare_avrg_sales(
+    Comparison: Comparison, sale_field, head: int = 10, show_result: bool = True
 ) -> DataFrame:
     "the records that their sales are above the average sales"
 
@@ -53,16 +53,16 @@ def collate_avrg_sales(
         ["Name", "Platform", "Year", "Genre", "Publisher", sale_field]
     ]
 
-    # collate
+    # Copare
     result = DataFrame()
 
-    if collation == Collation.BIGGER:
+    if Comparison == Comparison.BIGGER:
         result = dataframe[dataframe[sale_field] > mean(dataframe[sale_field])]
 
-    elif collation == Collation.LESS:
+    elif Comparison == Comparison.LESS:
         result = dataframe[dataframe[sale_field] < mean(dataframe[sale_field])]
 
-    elif collation == Collation.EQUAL:
+    elif Comparison == Comparison.EQUAL:
         result = dataframe[dataframe[sale_field] == mean(dataframe[sale_field])]
 
     # correct the format of sale field
