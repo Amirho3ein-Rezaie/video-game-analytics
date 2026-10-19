@@ -147,6 +147,7 @@ def preform(analysis: int, sub_analysis: int) -> None:
             lambda: sales.top_salling(),
             lambda: sales.total_selling(field()),
             lambda: sales.Copare_avrg_sales(select_comparison(), field(), head()),
+            lambda: sales.regional_sales_comparison(),
         ],
     ]
 
