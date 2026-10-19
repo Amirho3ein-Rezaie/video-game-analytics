@@ -2,7 +2,7 @@ from numpy import sum, mean
 from pandas import DataFrame
 from data.data import data
 from tools.func import dataframe_as_table, display_result
-from tools.classes import Comparison
+from tools.classes import Comparison, DatasetFields
 
 
 def top_salling(show_result: bool = True) -> DataFrame:
@@ -78,3 +78,42 @@ def Copare_avrg_sales(
         dataframe_as_table(result.head(head), [sale_field])
 
     return result
+
+
+def regional_sales_comparison(show_result: bool = True) -> DataFrame:
+    "calculate the some analysis about the sale fields (total selling)"
+
+    dataframe = data.get_data()
+
+    # get the sale fields
+    sale_fields = list(DatasetFields.StatsFields())
+
+    # save the value of elements of the enum fields
+    for index in range(len(sale_fields)):
+        sale_fields[index] = sale_fields[index].value
+
+    # cal the total
+    total_selling_fields = []
+    for field in sale_fields:
+        total_selling_fields.append(sum(dataframe[field]))
+
+    # make result dataframe
+    result_dict = {}
+
+    # add the fields to the dataset
+    result_dict["Field name"] = sale_fields
+    result_dict["Total selling (copy)"] = total_selling_fields
+
+    # make dataframe
+    result_dataframe = DataFrame(result_dict)
+
+    # change the format of some fields
+    result_dataframe["Total selling (copy)"] = (
+        result_dataframe["Total selling (copy)"] * 1_000_000
+    )
+
+    # show the dataframe
+    if show_result:
+        dataframe_as_table(result_dataframe, ["Total selling (copy)"])
+
+    return result_dataframe
