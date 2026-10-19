@@ -40,3 +40,11 @@ class DatasetFields:
         columns = list(dataset.columns[5:])
 
         return Enum("StatsFields", {column: column for column in columns})
+
+
+class Collation(Enum):
+    "an Enum that defines the colltion"
+
+    BIGGER = "BIGGER"
+    LESS = "LESS"
+    EQUAL = "EQUAL"
