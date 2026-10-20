@@ -33,13 +33,20 @@ class DatasetFields:
 
     @staticmethod
     def StatsFields() -> Enum:
-        "read the dataset and returns the fields that can calculate the stats on them as Enum"
+        "fields that can calculate the stats on them as Enum"
 
         dataset = data.get_data()
 
         columns = list(dataset.columns[5:])
 
         return Enum("StatsFields", {column: column for column in columns})
+
+    class GroupByFields(Enum):
+        "The fields that we group the dataset by them"
+
+        Platform = "Platform"
+        Year = "Year"
+        Genre = "Genre"
 
 
 class Comparison(Enum):
