@@ -18,6 +18,9 @@ def group_analysis(
         count=(sales_field, "count"),
     )
 
+    # add sale field to dataframe
+    dataframe['sale_field'] = sales_field
+
     # show the result
     if show_result:
         dataframe[["total_sales", "avg_sales", "count"]] = (
