@@ -1,5 +1,5 @@
 from pandas import DataFrame
-from .func_analysis import group_analysis
+from tools.func_analysis import group_analysis
 from tools.classes import DatasetFields
 
 
