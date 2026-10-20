@@ -4,7 +4,7 @@ from modules.prepare import (
     change_columns_type,
     save_prepared_dataset_file,
 )
-from modules import stats, sales, gerne
+from modules import stats, sales, gerne, platform
 from tools.func import (
     run_command,
     select_option,
@@ -65,6 +65,7 @@ def select_analysis() -> int:
         "Stats_analysis",
         "Sales_analysis",
         "Genre_analysis",
+        "Platform_analysis",
     ]  # list of analysis
     return select_item(analysis, 1, "select of analysis option ... ")
 
@@ -80,6 +81,9 @@ def select_sub_analysis(analysis: int) -> dict:
             "Total Sales",
             "Copare Average Sales",
             "Regional Sales Comparison",
+        ],
+        [
+            "Total Sales, Count, Mean sales by Genre",
         ],
         [
             "Total Sales, Count, Mean sales by Genre",
@@ -119,6 +123,9 @@ def preform(analysis: int, sub_analysis: int) -> None:
         ],
         [
             lambda: gerne.gerne_analysis(sales_field=field_sales_select()),
+        ],
+        [
+            lambda: platform.platform_analysis(sales_field=field_sales_select()),
         ],
     ]
 
