@@ -169,7 +169,7 @@ def dataframe_as_table(dataframe: DataFrame, number_columns: list = []) -> None:
     print()
 
 
-def field_select():
+def field_sales_select():
     "select selling fields"
 
     # select
