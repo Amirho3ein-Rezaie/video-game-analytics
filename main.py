@@ -68,7 +68,7 @@ def select_analysis() -> int:
         "Platform_analysis",
         "Year_analysis",
     ]  # list of analysis
-    return select_item(analysis, 1, "select of analysis option ... ")
+    return select_item(analysis, GO_BACK_OPTION + 1, "select of analysis option ... ")
 
 
 def select_sub_analysis(analysis: int) -> dict:
