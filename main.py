@@ -4,7 +4,7 @@ from modules.prepare import (
     change_columns_type,
     save_prepared_dataset_file,
 )
-from modules import stats, sales
+from modules import stats, sales, gerne
 from tools.func import (
     run_command,
     select_option,
@@ -12,7 +12,7 @@ from tools.func import (
     ask_yes_no,
     select_item,
     splitter,
-    field_select,
+    field_sales_select,
     head_select,
     select_comparison,
 )
@@ -61,7 +61,11 @@ def prepare_data() -> None:
 def select_analysis() -> int:
     "select analysis before select sub_analysis"
 
-    analysis = ["stats", "sales"]  # list of analysis
+    analysis = [
+        "Stats_analysis",
+        "Sales_analysis",
+        "Genre_analysis",
+    ]  # list of analysis
     return select_item(analysis, 1, "select of analysis option ... ")
 
 
@@ -76,6 +80,9 @@ def select_sub_analysis(analysis: int) -> dict:
             "Total Sales",
             "Copare Average Sales",
             "Regional Sales Comparison",
+        ],
+        [
+            "Total Sales, Count, Mean sales by Genre",
         ],
     ]
 
@@ -94,21 +101,24 @@ def preform(analysis: int, sub_analysis: int) -> None:
     # sub analysis options
     funcs = [
         [
-            lambda: stats.describe_field(field_select(), "mean"),
-            lambda: stats.describe_field(field_select(), "50%"),
-            lambda: stats.describe_field(field_select(), "std"),
-            lambda: stats.describe_field(field_select(), "min"),
-            lambda: stats.describe_field(field_select(), "max"),
-            lambda: stats.quartiles(field_select()),
-            lambda: stats.all(field_select()),
+            lambda: stats.describe_field(field_sales_select(), "mean"),
+            lambda: stats.describe_field(field_sales_select(), "50%"),
+            lambda: stats.describe_field(field_sales_select(), "std"),
+            lambda: stats.describe_field(field_sales_select(), "min"),
+            lambda: stats.describe_field(field_sales_select(), "max"),
+            lambda: stats.quartiles(field_sales_select()),
+            lambda: stats.all(field_sales_select()),
         ],
         [
             lambda: sales.top_salling(),
-            lambda: sales.total_selling(field_select()),
+            lambda: sales.total_selling(field_sales_select()),
             lambda: sales.Copare_avrg_sales(
-                select_comparison(), field_select(), head_select()
+                select_comparison(), field_sales_select(), head_select()
             ),
             lambda: sales.regional_sales_comparison(),
+        ],
+        [
+            lambda: gerne.gerne_analysis(sales_field=field_sales_select()),
         ],
     ]
 
