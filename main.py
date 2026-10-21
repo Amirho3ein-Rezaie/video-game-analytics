@@ -1,5 +1,5 @@
-from modules.loader import read_data_file
-from modules.prepare import (
+from data.loader import read_data_file
+from data.prepare import (
     cleaning_data,
     change_columns_type,
     save_prepared_dataset_file,
