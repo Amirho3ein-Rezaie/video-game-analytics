@@ -120,7 +120,7 @@ def preform(analysis: int, sub_analysis: int) -> None:
         [
             lambda: sales.top_salling(),
             lambda: sales.total_selling(field_sales_select()),
-            lambda: sales.Copare_avrg_sales(
+            lambda: sales.Compare_avrg_sales(
                 select_comparison(), field_sales_select(), head_select()
             ),
             lambda: sales.regional_sales_comparison(),

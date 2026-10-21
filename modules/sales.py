@@ -41,7 +41,7 @@ def total_selling(field, show_result: bool = True) -> int:
     return total
 
 
-def Copare_avrg_sales(
+def Compare_avrg_sales(
     Comparison: Comparison, sale_field, head: int = 10, show_result: bool = True
 ) -> DataFrame:
     "the records that their sales are above the average sales"
