@@ -23,8 +23,8 @@ def group_analysis(
 
     # show the result
     if show_result:
-        dataframe[["total_sales", "avg_sales", "count"]] = (
-            dataframe[["total_sales", "avg_sales", "count"]] * 1_000_000
+        dataframe[["total_sales", "avg_sales"]] = (
+            dataframe[["total_sales", "avg_sales"]] * 1_000_000
         ).astype(int)
 
         dataframe_as_table(dataframe, ["total_sales", "avg_sales", "count"])
