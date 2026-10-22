@@ -4,7 +4,7 @@ from data.prepare import (
     change_columns_type,
     save_prepared_dataset_file,
 )
-from modules import stats, sales, gerne, platform, year
+from analysis import stats, sales, gerne, platform, year
 from tools.func import (
     run_command,
     select_option,
